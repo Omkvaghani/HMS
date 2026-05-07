@@ -17,6 +17,10 @@ import HotelRooms from "@/pages/hotel-admin/RoomsPage"
 import HotelRoomClasses from "@/pages/hotel-admin/RoomClassesPage"
 import HotelCustomers from "@/pages/hotel-admin/CustomersPage"
 import HotelBookings from "@/pages/hotel-admin/BookingsPage"
+import HotelStaff from "@/pages/hotel-admin/StaffPage"
+import HotelExpenses from "@/pages/hotel-admin/ExpensesPage"
+import HotelCash from "@/pages/hotel-admin/CashPage"
+import HotelSettings from "@/pages/hotel-admin/SettingsPage"
 
 import BookingEnginePage from "@/pages/book/BookingEnginePage"
 
@@ -57,6 +61,10 @@ export default function App() {
         <Route path="rooms" element={<HotelRooms />} />
         <Route path="room-classes" element={<HotelRoomClasses />} />
         <Route path="customers" element={<HotelCustomers />} />
+        <Route path="staff" element={<HotelStaff />} />
+        <Route path="expenses" element={<HotelExpenses />} />
+        <Route path="cash" element={<HotelCash />} />
+        <Route path="settings" element={<HotelSettings />} />
       </Route>
 
       <Route path="/book/:subdomain" element={<BookingEnginePage />} />

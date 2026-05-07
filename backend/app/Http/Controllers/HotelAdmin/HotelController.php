@@ -69,6 +69,13 @@ class HotelController extends Controller
             'currency' => ['nullable', 'string', 'size:3'],
             'default_tax_rate' => ['nullable', 'numeric', 'between:0,99.99'],
             'tax_mode' => ['nullable', 'in:INCLUSIVE,EXCLUSIVE'],
+            'settings' => ['nullable', 'array'],
+            'settings.default_next_day_checkout_time' => ['nullable', 'date_format:H:i'],
+            'settings.enabled_duration_types' => ['nullable', 'array'],
+            'settings.enabled_duration_types.*' => ['in:1H,2H,3H,12H,NIGHT,DAY'],
+            'settings.auto_confirm_online' => ['nullable', 'boolean'],
+            'settings.advance_booking_max_days' => ['nullable', 'integer', 'min:1', 'max:730'],
+            'settings.theme' => ['nullable', 'in:warm,light,dark'],
             'is_active' => ['boolean'],
         ]);
     }

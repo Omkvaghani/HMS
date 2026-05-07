@@ -2,8 +2,8 @@ import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { api, getApiErrorMessage } from "@/lib/api"
 import PageHeader from "@/components/PageHeader"
+import { useHotelContext } from "@/lib/hotel-context"
 
-type Hotel = { id: number; name: string }
 type RoomClass = { id: number; name: string }
 
 type Room = {
@@ -28,11 +28,8 @@ export default function RoomsPage() {
   const qc = useQueryClient()
   const [error, setError] = useState<string | null>(null)
   const [showCreate, setShowCreate] = useState(false)
-  const { data: hotels } = useQuery({
-    queryKey: ["hotel-admin", "hotels"],
-    queryFn: async () => (await api.get<Hotel[]>("/hotel-admin/hotels")).data,
-  })
-  const hotelId = hotels?.[0]?.id
+  const { activeHotelId } = useHotelContext()
+  const hotelId = activeHotelId
 
   const { data: classes } = useQuery({
     queryKey: ["hotel-admin", "room-classes", hotelId],
