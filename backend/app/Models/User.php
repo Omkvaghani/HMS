@@ -14,8 +14,11 @@ class User extends Authenticatable
     use Notifiable;
 
     public const ROLE_SUPER_ADMIN = 'SUPER_ADMIN';
+
     public const ROLE_HOTEL_ADMIN = 'HOTEL_ADMIN';
+
     public const ROLE_STAFF = 'STAFF';
+
     public const ROLE_GUEST = 'GUEST';
 
     protected $fillable = [

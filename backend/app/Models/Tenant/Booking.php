@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     public const STATUS_PENDING = 'PENDING';
+
     public const STATUS_CONFIRMED = 'CONFIRMED';
+
     public const STATUS_CHECKED_IN = 'CHECKED_IN';
+
     public const STATUS_CHECKED_OUT = 'CHECKED_OUT';
+
     public const STATUS_CANCELLED = 'CANCELLED';
+
     public const STATUS_NO_SHOW = 'NO_SHOW';
 
     protected $fillable = [

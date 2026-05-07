@@ -1,10 +1,16 @@
 <?php
 
 use App\Http\Middleware\EnsureRole;
+use App\Http\Middleware\InitializeTenancyBySubdomainParam;
+use App\Http\Middleware\InitializeTenancyByUser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use Illuminate\Http\Middleware\HandleCors;
+use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedException;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\InitializeTenancyByRequestData;
+use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,20 +24,20 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'role' => EnsureRole::class,
-            'tenant.user' => \App\Http\Middleware\InitializeTenancyByUser::class,
-            'tenant.subdomain.param' => \App\Http\Middleware\InitializeTenancyBySubdomainParam::class,
-            'tenant.subdomain' => \Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain::class,
-            'tenant.domain' => \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class,
-            'tenant.header' => \Stancl\Tenancy\Middleware\InitializeTenancyByRequestData::class,
+            'tenant.user' => InitializeTenancyByUser::class,
+            'tenant.subdomain.param' => InitializeTenancyBySubdomainParam::class,
+            'tenant.subdomain' => InitializeTenancyBySubdomain::class,
+            'tenant.domain' => InitializeTenancyByDomain::class,
+            'tenant.header' => InitializeTenancyByRequestData::class,
         ]);
 
         // Token-only Sanctum endpoints (no session cookie required).
         $middleware->api(prepend: [
-            \Illuminate\Http\Middleware\HandleCors::class,
+            HandleCors::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (\Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedException $e, $request) {
+        $exceptions->render(function (TenantCouldNotBeIdentifiedException $e, $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json(['message' => 'Hotel not found.'], 404);
             }
