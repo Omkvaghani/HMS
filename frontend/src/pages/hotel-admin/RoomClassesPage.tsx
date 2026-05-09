@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { api, getApiErrorMessage } from "@/lib/api"
 import PageHeader from "@/components/PageHeader"
 import { formatCurrency } from "@/lib/format"
+import { useHotelContext } from "@/lib/hotel-context"
 
 type RoomClass = {
   id: number
@@ -16,18 +17,22 @@ type RoomClass = {
   bed_type: string | null
   base_price: string
   weekend_price: string | null
+  duration_prices: Record<string, string> | null
   is_active: boolean
 }
 
-type Hotel = { id: number; name: string }
+const DURATION_FIELDS: Array<{ code: string; label: string }> = [
+  { code: "1H", label: "1 hour" },
+  { code: "2H", label: "2 hour" },
+  { code: "3H", label: "3 hour" },
+  { code: "12H", label: "12 hour" },
+  { code: "NIGHT", label: "Single night" },
+]
 
 export default function RoomClassesPage() {
   const qc = useQueryClient()
-  const { data: hotels } = useQuery({
-    queryKey: ["hotel-admin", "hotels"],
-    queryFn: async () => (await api.get<Hotel[]>("/hotel-admin/hotels")).data,
-  })
-  const hotelId = hotels?.[0]?.id
+  const { activeHotelId } = useHotelContext()
+  const hotelId = activeHotelId
 
   const { data, isLoading } = useQuery({
     queryKey: ["hotel-admin", "room-classes", hotelId],
@@ -41,6 +46,7 @@ export default function RoomClassesPage() {
 
   const [showCreate, setShowCreate] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [editing, setEditing] = useState<RoomClass | null>(null)
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -51,15 +57,55 @@ export default function RoomClassesPage() {
     bed_type: "Queen",
     base_price: "100",
     weekend_price: "",
+    duration_prices: {} as Record<string, string>,
   })
 
-  const createMut = useMutation({
-    mutationFn: () =>
-      api.post("/hotel-admin/room-classes", {
+  const open = (rc?: RoomClass) => {
+    setError(null)
+    if (rc) {
+      setEditing(rc)
+      setForm({
+        name: rc.name,
+        description: rc.description ?? "",
+        max_adults: rc.max_adults,
+        max_children: rc.max_children,
+        max_occupancy: rc.max_occupancy,
+        bed_count: rc.bed_count,
+        bed_type: rc.bed_type ?? "",
+        base_price: rc.base_price,
+        weekend_price: rc.weekend_price ?? "",
+        duration_prices: (rc.duration_prices as Record<string, string>) ?? {},
+      })
+    } else {
+      setEditing(null)
+      setForm({
+        name: "",
+        description: "",
+        max_adults: 2,
+        max_children: 1,
+        max_occupancy: 3,
+        bed_count: 1,
+        bed_type: "Queen",
+        base_price: "100",
+        weekend_price: "",
+        duration_prices: {},
+      })
+    }
+    setShowCreate(true)
+  }
+
+  const saveMut = useMutation({
+    mutationFn: () => {
+      const payload = {
         ...form,
         hotel_id: hotelId,
         weekend_price: form.weekend_price || null,
-      }),
+        duration_prices: pruneDurations(form.duration_prices),
+      }
+      return editing
+        ? api.put(`/hotel-admin/room-classes/${editing.id}`, payload)
+        : api.post("/hotel-admin/room-classes", payload)
+    },
     onSuccess: () => {
       setShowCreate(false)
       qc.invalidateQueries({ queryKey: ["hotel-admin", "room-classes"] })
@@ -73,7 +119,7 @@ export default function RoomClassesPage() {
         title="Room classes"
         subtitle="Set up room types, capacities, and base nightly rates."
         actions={
-          <button type="button" className="btn-warm" disabled={!hotelId} onClick={() => setShowCreate(true)}>
+          <button type="button" className="btn-warm" disabled={!hotelId} onClick={() => open()}>
             New room class
           </button>
         }
@@ -110,6 +156,20 @@ export default function RoomClassesPage() {
                 <Pair label="Base / night" value={formatCurrency(rc.base_price)} />
                 <Pair label="Weekend / night" value={rc.weekend_price ? formatCurrency(rc.weekend_price) : "Same"} />
               </dl>
+              {rc.duration_prices && Object.keys(rc.duration_prices).length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {Object.entries(rc.duration_prices).map(([k, v]) => (
+                    <span key={k} className="pill bg-cream-100 text-cocoa-700">
+                      {k}: {formatCurrency(v)}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4 flex justify-end">
+                <button type="button" className="text-sm font-medium text-cocoa-800 hover:underline" onClick={() => open(rc)}>
+                  Edit
+                </button>
+              </div>
             </article>
           ))}
         </div>
@@ -118,12 +178,12 @@ export default function RoomClassesPage() {
       {showCreate && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
           <div className="card-warm w-full max-w-2xl p-6">
-            <h3 className="font-display text-2xl">New room class</h3>
-            <p className="mt-1 text-sm text-ink-soft">Define a room type. You can add individual rooms after.</p>
+            <h3 className="font-display text-2xl">{editing ? "Edit room class" : "New room class"}</h3>
+            <p className="mt-1 text-sm text-ink-soft">Set capacity, base nightly rate, and optional short-stay rates.</p>
             <form
               onSubmit={(e) => {
                 e.preventDefault()
-                createMut.mutate()
+                saveMut.mutate()
               }}
               className="mt-5 grid grid-cols-2 gap-4"
             >
@@ -155,12 +215,37 @@ export default function RoomClassesPage() {
                 <input className="input-warm" type="number" min={0} step="0.01" value={form.weekend_price} onChange={(e) => setForm({ ...form, weekend_price: e.target.value })} />
               </Field>
 
+              <div className="col-span-2 rounded-xl border border-cream-200 p-4">
+                <div className="font-medium text-cocoa-900">Short-stay & per-duration prices</div>
+                <p className="mt-1 text-sm text-ink-soft">Optional. Leave blank to fall back to a percentage of the base price.</p>
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                  {DURATION_FIELDS.map((d) => (
+                    <label key={d.code}>
+                      <span className="label-warm">{d.label}</span>
+                      <input
+                        className="input-warm"
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        value={form.duration_prices[d.code] ?? ""}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            duration_prices: { ...form.duration_prices, [d.code]: e.target.value },
+                          })
+                        }
+                      />
+                    </label>
+                  ))}
+                </div>
+              </div>
+
               <div className="col-span-2 mt-4 flex justify-end gap-2">
                 <button type="button" className="btn-ghost" onClick={() => setShowCreate(false)}>
                   Cancel
                 </button>
-                <button className="btn-warm" disabled={createMut.isPending}>
-                  {createMut.isPending ? "Saving…" : "Create room class"}
+                <button className="btn-warm" disabled={saveMut.isPending}>
+                  {saveMut.isPending ? "Saving…" : editing ? "Save changes" : "Create room class"}
                 </button>
               </div>
             </form>
@@ -169,6 +254,15 @@ export default function RoomClassesPage() {
       )}
     </>
   )
+}
+
+function pruneDurations(map: Record<string, string>): Record<string, number> | null {
+  const out: Record<string, number> = {}
+  for (const [k, v] of Object.entries(map)) {
+    const n = Number(v)
+    if (v !== "" && Number.isFinite(n) && n > 0) out[k] = n
+  }
+  return Object.keys(out).length ? out : null
 }
 
 function Pair({ label, value }: { label: string; value: string }) {

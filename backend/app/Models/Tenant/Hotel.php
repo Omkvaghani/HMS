@@ -12,12 +12,13 @@ class Hotel extends Model
         'phone', 'email', 'website', 'latitude', 'longitude',
         'logo_url', 'cover_image_url', 'amenities', 'policies',
         'check_in_time', 'check_out_time', 'timezone', 'currency',
-        'default_tax_rate', 'tax_mode', 'is_active',
+        'default_tax_rate', 'tax_mode', 'settings', 'is_active',
     ];
 
     protected $casts = [
         'amenities' => 'array',
         'policies' => 'array',
+        'settings' => 'array',
         'is_active' => 'boolean',
         'default_tax_rate' => 'decimal:2',
         'latitude' => 'decimal:7',
@@ -52,5 +53,20 @@ class Hotel extends Model
     public function publicAddons()
     {
         return $this->hasMany(PublicAddon::class);
+    }
+
+    public function staff()
+    {
+        return $this->hasMany(Staff::class);
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function cashTransactions()
+    {
+        return $this->hasMany(CashTransaction::class);
     }
 }

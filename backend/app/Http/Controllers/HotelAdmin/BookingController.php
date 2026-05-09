@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HotelAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Booking;
 use App\Models\Tenant\BookingPayment;
+use App\Models\Tenant\CashTransaction;
 use App\Models\Tenant\Customer;
 use App\Models\Tenant\Hotel;
 use App\Models\Tenant\Room;
@@ -79,9 +80,14 @@ class BookingController extends Controller
             'room_class_id' => ['required', 'integer', 'exists:room_classes,id'],
             'room_id' => ['nullable', 'integer', 'exists:rooms,id'],
             'check_in_date' => ['required', 'date'],
-            'check_out_date' => ['required', 'date', 'after:check_in_date'],
+            'check_out_date' => ['required', 'date'],
             'adults' => ['required', 'integer', 'min:1', 'max:30'],
             'children' => ['required', 'integer', 'min:0', 'max:30'],
+            'duration_type' => ['nullable', 'in:1H,2H,3H,12H,NIGHT,DAY'],
+            'booking_type' => ['nullable', 'in:OFFLINE,ONLINE,ADVANCE'],
+            'booked_for_date' => ['nullable', 'date'],
+            'stay_starts_at' => ['nullable', 'date'],
+            'stay_ends_at' => ['nullable', 'date', 'after:stay_starts_at'],
             'special_requests' => ['nullable', 'string', 'max:2000'],
             'internal_notes' => ['nullable', 'string', 'max:2000'],
             'source' => ['nullable', 'in:DIRECT,BOOKING_ENGINE,WALK_IN,PHONE,OTA'],
@@ -93,7 +99,14 @@ class BookingController extends Controller
             'guest.phone' => ['nullable', 'string', 'max:32'],
         ]);
 
-        return DB::transaction(function () use ($data) {
+        $durationType = $data['duration_type'] ?? Booking::DURATION_DAY;
+        if ($durationType === Booking::DURATION_DAY) {
+            if (strtotime($data['check_out_date']) <= strtotime($data['check_in_date'])) {
+                abort(422, 'check_out_date must be after check_in_date for multi-day stays');
+            }
+        }
+
+        return DB::transaction(function () use ($data, $durationType) {
             $hotel = Hotel::findOrFail($data['hotel_id']);
             $roomClass = RoomClass::findOrFail($data['room_class_id']);
 
@@ -112,7 +125,13 @@ class BookingController extends Controller
                 (int) $data['adults'],
                 (int) $data['children'],
                 $data['addons'] ?? [],
+                $durationType,
             );
+
+            $bookingType = $data['booking_type'] ?? Booking::TYPE_OFFLINE;
+            $status = $bookingType === Booking::TYPE_ADVANCE
+                ? Booking::STATUS_PENDING
+                : Booking::STATUS_CONFIRMED;
 
             $booking = Booking::create([
                 'reference' => 'BK-'.strtoupper(Str::random(8)),
@@ -121,13 +140,19 @@ class BookingController extends Controller
                 'room_class_id' => $roomClass->id,
                 'room_id' => $data['room_id'] ?? null,
                 'source' => $data['source'] ?? 'DIRECT',
-                'status' => Booking::STATUS_CONFIRMED,
+                'booking_type' => $bookingType,
+                'status' => $status,
                 'payment_status' => 'UNPAID',
                 'check_in_date' => $data['check_in_date'],
                 'check_out_date' => $data['check_out_date'],
+                'booked_for_date' => $data['booked_for_date'] ?? null,
+                'stay_starts_at' => $data['stay_starts_at'] ?? null,
+                'stay_ends_at' => $data['stay_ends_at'] ?? null,
                 'adults' => $data['adults'],
                 'children' => $data['children'],
                 'nights' => $quote['nights'],
+                'duration_type' => $durationType,
+                'duration_hours' => $quote['duration_hours'] ?? null,
                 'room_subtotal' => $quote['room_subtotal'],
                 'addons_subtotal' => $quote['addons_subtotal'],
                 'tax_total' => $quote['tax_total'],
@@ -220,6 +245,23 @@ class BookingController extends Controller
                 'notes' => $data['notes'] ?? null,
                 'paid_at' => now(),
             ]);
+
+            // Mirror cash payments into the cash register so daily totals stay
+            // accurate. Card / bank / online payments are tracked elsewhere.
+            if ($data['method'] === 'CASH') {
+                CashTransaction::create([
+                    'hotel_id' => $booking->hotel_id,
+                    'transaction_date' => now()->toDateString(),
+                    'direction' => CashTransaction::DIRECTION_IN,
+                    'kind' => 'BOOKING_PAYMENT',
+                    'amount' => $data['amount'],
+                    'currency' => $booking->currency,
+                    'reference' => $booking->reference,
+                    'notes' => $data['notes'] ?? null,
+                    'booking_id' => $booking->id,
+                    'recorded_by' => optional(request()->user())->id,
+                ]);
+            }
 
             $totalPaid = (float) $booking->payments()->sum('amount');
             $booking->update([

@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HotelAdmin\BookingController;
+use App\Http\Controllers\HotelAdmin\CashController;
 use App\Http\Controllers\HotelAdmin\CustomerController;
 use App\Http\Controllers\HotelAdmin\DashboardController;
+use App\Http\Controllers\HotelAdmin\ExpenseController;
 use App\Http\Controllers\HotelAdmin\HotelController;
+use App\Http\Controllers\HotelAdmin\HotelSettingsController;
 use App\Http\Controllers\HotelAdmin\RoomClassController;
 use App\Http\Controllers\HotelAdmin\RoomController;
+use App\Http\Controllers\HotelAdmin\StaffController;
 use App\Http\Controllers\Public\BookingEngineController;
 use App\Http\Controllers\SuperAdmin\OnboardingController;
 use App\Http\Controllers\SuperAdmin\PackageController;
@@ -63,6 +67,19 @@ Route::prefix('v1')->group(function () {
         Route::post('bookings/{booking}/check-out', [BookingController::class, 'checkOut']);
         Route::post('bookings/{booking}/cancel', [BookingController::class, 'cancel']);
         Route::post('bookings/{booking}/payments', [BookingController::class, 'recordPayment']);
+
+        Route::apiResource('staff', StaffController::class);
+
+        Route::get('expenses/summary', [ExpenseController::class, 'summary']);
+        Route::apiResource('expenses', ExpenseController::class);
+
+        Route::get('cash/summary', [CashController::class, 'summary']);
+        Route::get('cash', [CashController::class, 'index']);
+        Route::post('cash', [CashController::class, 'store']);
+        Route::delete('cash/{cashTransaction}', [CashController::class, 'destroy']);
+
+        Route::get('hotels/{hotel}/settings', [HotelSettingsController::class, 'show']);
+        Route::put('hotels/{hotel}/settings', [HotelSettingsController::class, 'update']);
     });
 
     // --- Public Booking Engine: tenant resolved from {subdomain} route param ---

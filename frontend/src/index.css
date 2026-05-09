@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------------------------------------------------------------------------
    Hospitality-warm theme (Marriott-inspired): warm sand, cocoa, copper accents
 --------------------------------------------------------------------------- */
@@ -30,6 +32,30 @@
   --radius-card: 14px;
   --shadow-card: 0 1px 2px rgba(74, 47, 23, 0.06),
                  0 8px 24px rgba(74, 47, 23, 0.08);
+}
+
+/* Dark theme palette overrides — keep the warm copper accents but flip
+   surfaces / text to a deep cocoa-night palette. */
+:root.dark {
+  --color-cream-50: #1a130c;
+  --color-cream-100: #221a11;
+  --color-cream-200: #2c2117;
+  --color-sand-300: #b9914d;
+  --color-sand-400: #d2a464;
+  --color-copper-500: #d49058;
+  --color-copper-600: #b97c45;
+  --color-cocoa-700: #f1d9b8;
+  --color-cocoa-800: #f7e7c8;
+  --color-cocoa-900: #fbf2dd;
+
+  --color-ink: #f5ecdc;
+  --color-ink-soft: #c3b39b;
+  --color-ink-muted: #8e7e69;
+
+  --color-surface: #271d12;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4),
+                 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 @layer base {
@@ -104,16 +130,17 @@
   .btn-ghost:hover { background: var(--color-cream-100); border-color: var(--color-sand-300); }
 
   .card-warm {
-    background: white;
+    background: var(--color-surface, white);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
-    border: 1px solid rgba(74, 47, 23, 0.06);
+    border: 1px solid var(--color-cream-200);
+    color: var(--color-ink);
   }
 
   .input-warm {
     width: 100%;
     border-radius: 10px;
-    background: white;
+    background: var(--color-surface, white);
     border: 1px solid var(--color-cream-200);
     padding: 0.625rem 0.875rem;
     font-size: 0.95rem;
@@ -133,6 +160,9 @@
     margin-bottom: 0.375rem;
     display: block;
   }
+
+  .surface-card { background: var(--color-surface, white); }
+  .surface-side { background: var(--color-surface, white); }
 
   .pill {
     display: inline-flex;

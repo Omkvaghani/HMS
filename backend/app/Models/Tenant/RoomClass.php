@@ -10,7 +10,8 @@ class RoomClass extends Model
         'hotel_id', 'name', 'slug', 'description',
         'max_adults', 'max_children', 'max_occupancy',
         'bed_count', 'bed_type',
-        'base_price', 'weekend_price', 'extra_adult_price', 'extra_child_price',
+        'base_price', 'weekend_price', 'duration_prices',
+        'extra_adult_price', 'extra_child_price',
         'amenities', 'image_urls', 'size_sqft',
         'is_active', 'sort_order',
     ];
@@ -18,6 +19,7 @@ class RoomClass extends Model
     protected $casts = [
         'amenities' => 'array',
         'image_urls' => 'array',
+        'duration_prices' => 'array',
         'is_active' => 'boolean',
         'base_price' => 'decimal:2',
         'weekend_price' => 'decimal:2',
