@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Hospitality-warm theme (Marriott-inspired): warm sand, cocoa, copper accents
+--------------------------------------------------------------------------- */
+@theme {
+  --color-cream-50: #fbf7f1;
+  --color-cream-100: #f5ecdf;
+  --color-cream-200: #ecdcc4;
+  --color-sand-300: #d8bd8e;
+  --color-sand-400: #c5a064;
+  --color-copper-500: #b07a3a;
+  --color-copper-600: #8d5f2a;
+  --color-cocoa-700: #6b4521;
+  --color-cocoa-800: #4a2f17;
+  --color-cocoa-900: #2c1c0e;
+
+  --color-ink: #1f1a14;
+  --color-ink-soft: #5a4f44;
+  --color-ink-muted: #8a7b6a;
+
+  --color-leaf-500: #6b8e4e;
+  --color-leaf-600: #54703d;
+  --color-rose-500: #c25a4d;
+  --color-rose-600: #a44438;
+
+  --font-display: "Fraunces", "DM Serif Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --radius-card: 14px;
+  --shadow-card: 0 1px 2px rgba(74, 47, 23, 0.06),
+                 0 8px 24px rgba(74, 47, 23, 0.08);
+}
+
+/* Dark theme palette overrides — keep the warm copper accents but flip
+   surfaces / text to a deep cocoa-night palette. */
+:root.dark {
+  --color-cream-50: #1a130c;
+  --color-cream-100: #221a11;
+  --color-cream-200: #2c2117;
+  --color-sand-300: #b9914d;
+  --color-sand-400: #d2a464;
+  --color-copper-500: #d49058;
+  --color-copper-600: #b97c45;
+  --color-cocoa-700: #f1d9b8;
+  --color-cocoa-800: #f7e7c8;
+  --color-cocoa-900: #fbf2dd;
+
+  --color-ink: #f5ecdc;
+  --color-ink-soft: #c3b39b;
+  --color-ink-muted: #8e7e69;
+
+  --color-surface: #271d12;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4),
+                 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-cream-50);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    margin: 0;
+    min-height: 100svh;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-cocoa-900);
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  /* subtle paper-texture undertone on the marketing/booking surfaces */
+  .surface-paper {
+    background:
+      radial-gradient(circle at 20% 0%, rgba(208,167,116,0.08), transparent 40%),
+      radial-gradient(circle at 80% 100%, rgba(107,69,33,0.05), transparent 40%),
+      var(--color-cream-50);
+  }
+}
+
+@layer utilities {
+  .text-display { font-family: var(--font-display); }
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  /* primary "warm" button */
+  .btn-warm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.625rem 1.25rem;
+    background: var(--color-cocoa-800);
+    color: var(--color-cream-50);
+    font-weight: 500;
+    transition: background 120ms ease, transform 120ms ease;
+  }
+  .btn-warm:hover { background: var(--color-cocoa-700); }
+  .btn-warm:active { transform: translateY(1px); }
+  .btn-warm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.625rem 1.25rem;
+    background: transparent;
+    color: var(--color-cocoa-800);
+    border: 1px solid var(--color-cream-200);
+    font-weight: 500;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+  .btn-ghost:hover { background: var(--color-cream-100); border-color: var(--color-sand-300); }
+
+  .card-warm {
+    background: var(--color-surface, white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-cream-200);
+    color: var(--color-ink);
+  }
+
+  .input-warm {
+    width: 100%;
+    border-radius: 10px;
+    background: var(--color-surface, white);
+    border: 1px solid var(--color-cream-200);
+    padding: 0.625rem 0.875rem;
+    font-size: 0.95rem;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .input-warm:focus {
+    border-color: var(--color-sand-400);
+    box-shadow: 0 0 0 3px rgba(197, 160, 100, 0.18);
+  }
+
+  .label-warm {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-ink-soft);
+    margin-bottom: 0.375rem;
+    display: block;
+  }
+
+  .surface-card { background: var(--color-surface, white); }
+  .surface-side { background: var(--color-surface, white); }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--color-cream-100);
+    color: var(--color-cocoa-700);
+  }
+}
