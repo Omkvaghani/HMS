@@ -52,17 +52,17 @@ export default function OnboardingApplyPage() {
   }
 
   return (
-    <div className="surface-paper relative min-h-screen pb-24">
+    <div className="relative min-h-screen bg-surface-secondary pb-24">
       <MarketingHeader />
 
       <div className="mx-auto max-w-3xl px-6 pt-32">
         {done ? (
-          <div className="card-warm flex flex-col items-center p-12 text-center">
-            <CheckCircle2 className="size-12 text-leaf-600" />
-            <h1 className="mt-6 text-3xl">Application received.</h1>
-            <p className="mt-3 text-ink-soft">
+          <div className="card-warm flex flex-col items-center p-10 sm:p-12 text-center">
+            <CheckCircle2 className="size-12 text-success-600" />
+            <h1 className="mt-6 text-2xl sm:text-3xl font-semibold text-ink">Application received.</h1>
+            <p className="mt-3 text-ink-secondary">
               Thank you. Our team is reviewing your request and will reach out at{" "}
-              <strong className="text-cocoa-800">{form.contact_email}</strong> within 1–2 business
+              <strong className="text-ink">{form.contact_email}</strong> within 1–2 business
               days.
             </p>
             <Link to="/" className="btn-warm mt-8">
@@ -71,13 +71,13 @@ export default function OnboardingApplyPage() {
           </div>
         ) : (
           <>
-            <h1 className="text-balance text-4xl">List your hotel on Hospes.</h1>
-            <p className="mt-3 text-ink-soft">
+            <h1 className="text-balance text-3xl sm:text-4xl font-semibold text-ink">List your hotel on Hospes.</h1>
+            <p className="mt-3 text-ink-secondary">
               Tell us about your property. We will provision a private database, set up your
               admin account, and email you a sign-in link.
             </p>
 
-            <form onSubmit={onSubmit} className="card-warm mt-10 grid gap-6 p-8 md:grid-cols-2">
+            <form onSubmit={onSubmit} className="card-warm mt-10 grid gap-5 sm:gap-6 p-6 sm:p-8 md:grid-cols-2">
               <Field label="Hotel name *" required>
                 <input className="input-warm" required value={form.hotel_name} onChange={update("hotel_name")} />
               </Field>
@@ -111,7 +111,7 @@ export default function OnboardingApplyPage() {
                     value={form.desired_subdomain}
                     onChange={update("desired_subdomain")}
                   />
-                  <span className="rounded-r-[10px] border border-l-0 border-cream-200 bg-cream-50 px-3 py-[10px] text-sm text-ink-muted">
+                  <span className="rounded-r-[var(--radius-md)] border border-l-0 border-border bg-surface-tertiary px-3 py-[9px] text-sm text-ink-muted">
                     .hospes.app
                   </span>
                 </div>
@@ -137,13 +137,13 @@ export default function OnboardingApplyPage() {
               </Field>
 
               {error && (
-                <div className="md:col-span-2 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">
+                <div className="md:col-span-2 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">
                   {error}
                 </div>
               )}
 
               <div className="md:col-span-2 flex items-center justify-between">
-                <Link to="/" className="text-sm text-ink-soft hover:text-cocoa-800">
+                <Link to="/" className="text-sm text-ink-secondary hover:text-ink transition-colors">
                   ← Back
                 </Link>
                 <button className="btn-warm" disabled={submitting}>

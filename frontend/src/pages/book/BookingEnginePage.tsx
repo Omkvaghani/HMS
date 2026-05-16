@@ -102,7 +102,7 @@ export default function BookingEnginePage() {
   })
 
   if (brandingLoading) {
-    return <div className="grid min-h-screen place-items-center text-ink-soft">Loading…</div>
+    return <div className="grid min-h-screen place-items-center text-ink-secondary">Loading…</div>
   }
 
   if (brandingError || !branding) {
@@ -110,7 +110,7 @@ export default function BookingEnginePage() {
       <div className="grid min-h-screen place-items-center px-6 text-center">
         <div>
           <h1 className="text-3xl">Hotel not found.</h1>
-          <p className="mt-3 text-ink-soft">
+          <p className="mt-3 text-ink-secondary">
             We couldn't find a hotel at <code className="font-mono">/book/{subdomain}</code>.
           </p>
         </div>
@@ -135,21 +135,21 @@ export default function BookingEnginePage() {
             {branding.hotel.logo_url ? (
               <img src={branding.hotel.logo_url} alt="" className="h-10" />
             ) : (
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-cocoa-800 text-cream-50 font-display">
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-primary-600 text-white font-semibold">
                 {branding.hotel.name.charAt(0)}
               </div>
             )}
             <div>
-              <div className="font-display text-xl text-cream-50">{branding.hotel.name}</div>
+              <div className="text-xl font-semibold text-white">{branding.hotel.name}</div>
               {branding.hotel.city && (
-                <div className="flex items-center gap-1 text-xs text-cream-100/85">
+                <div className="flex items-center gap-1 text-xs text-white/80">
                   <MapPin className="size-3" />
                   {[branding.hotel.city, branding.hotel.country].filter(Boolean).join(", ")}
                 </div>
               )}
             </div>
           </div>
-          <div className="hidden text-right text-xs text-cream-100/85 md:block">
+          <div className="hidden text-right text-xs text-white/80 md:block">
             {branding.hotel.email && <div>{branding.hotel.email}</div>}
             {branding.hotel.phone && <div>{branding.hotel.phone}</div>}
           </div>
@@ -160,11 +160,11 @@ export default function BookingEnginePage() {
         className="relative overflow-hidden bg-cover bg-center pt-28 pb-32"
         style={{ backgroundImage: `linear-gradient(rgba(28,18,10,0.5), rgba(28,18,10,0.7)), url(${cover})` }}
       >
-        <div className="mx-auto max-w-4xl px-6 text-center text-cream-50">
-          <h1 className="text-balance font-display text-5xl text-cream-50 md:text-6xl">
+        <div className="mx-auto max-w-4xl px-6 text-center text-white">
+          <h1 className="text-balance text-4xl font-semibold text-white sm:text-5xl md:text-6xl">
             {branding.config?.headline || `Stay at ${branding.hotel.name}`}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-cream-100/85">
+          <p className="mx-auto mt-4 max-w-2xl text-white/80">
             {branding.config?.subheadline ||
               branding.hotel.description ||
               "Book directly with us — best rate, no commissions, the warmest welcome."}
@@ -204,18 +204,18 @@ export default function BookingEnginePage() {
       {submitted && (
         <section className="px-6 py-16">
           <div className="mx-auto max-w-5xl">
-            <h2 className="text-3xl">Available rooms</h2>
-            <p className="mt-1 text-ink-soft">
+            <h2 className="text-2xl font-semibold text-ink sm:text-3xl">Available rooms</h2>
+            <p className="mt-1 text-ink-secondary">
               {search.adults} adult{search.adults === 1 ? "" : "s"}{search.children ? `, ${search.children} children` : ""} ·{" "}
               {search.from} → {search.to}
             </p>
 
             {availLoading ? (
-              <div className="mt-8 text-ink-soft">Checking availability…</div>
+              <div className="mt-8 text-ink-secondary">Checking availability…</div>
             ) : (
               <div className="mt-8 space-y-4">
                 {(availability?.results ?? []).filter((r) => r.available_count > 0).length === 0 ? (
-                  <div className="card-warm p-12 text-center text-ink-soft">
+                  <div className="card-warm p-12 text-center text-ink-secondary">
                     No rooms available for those dates. Try different ones.
                   </div>
                 ) : (
@@ -223,7 +223,7 @@ export default function BookingEnginePage() {
                     .filter((r) => r.available_count > 0)
                     .map((r) => (
                       <article key={r.room_class.id} className="card-warm grid gap-6 p-6 md:grid-cols-[200px_1fr_auto]">
-                        <div className="overflow-hidden rounded-xl bg-cream-100">
+                        <div className="overflow-hidden rounded-xl bg-surface-tertiary">
                           <img
                             src={r.room_class.image_urls?.[0] ?? "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=70"}
                             alt={r.room_class.name}
@@ -231,9 +231,9 @@ export default function BookingEnginePage() {
                           />
                         </div>
                         <div>
-                          <h3 className="font-display text-2xl">{r.room_class.name}</h3>
-                          <p className="mt-1 text-sm text-ink-soft">{r.room_class.description ?? ""}</p>
-                          <div className="mt-3 flex flex-wrap gap-3 text-sm text-ink-soft">
+                          <h3 className="text-xl font-semibold text-ink">{r.room_class.name}</h3>
+                          <p className="mt-1 text-sm text-ink-secondary">{r.room_class.description ?? ""}</p>
+                          <div className="mt-3 flex flex-wrap gap-3 text-sm text-ink-secondary">
                             <span className="inline-flex items-center gap-1"><Users className="size-3.5" /> Up to {r.room_class.max_occupancy} guests</span>
                             <span>{r.room_class.bed_count} × {r.room_class.bed_type ?? "bed"}</span>
                             {r.room_class.size_sqft && <span>{r.room_class.size_sqft} sq ft</span>}
@@ -244,7 +244,7 @@ export default function BookingEnginePage() {
                         </div>
                         <div className="flex flex-col items-end justify-between gap-3">
                           <div className="text-right">
-                            <div className="font-display text-2xl text-cocoa-900">
+                            <div className="text-2xl font-semibold text-ink">
                               {r.quote ? formatCurrency(r.quote.grand_total, availability!.currency) : formatCurrency(r.room_class.base_price, availability!.currency)}
                             </div>
                             <div className="text-xs text-ink-muted">
@@ -279,13 +279,13 @@ export default function BookingEnginePage() {
       )}
 
       {confirmation && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/60 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
           <div className="card-warm w-full max-w-md p-6 text-center">
-            <CheckCircle2 className="mx-auto size-12 text-leaf-600" />
-            <h3 className="mt-4 font-display text-3xl">Booking confirmed.</h3>
-            <p className="mt-2 text-sm text-ink-soft">
+            <CheckCircle2 className="mx-auto size-12 text-success-600" />
+            <h3 className="mt-4 text-2xl font-semibold text-ink">Booking confirmed.</h3>
+            <p className="mt-2 text-sm text-ink-secondary">
               Your confirmation reference is{" "}
-              <strong className="font-mono text-cocoa-900">{confirmation.reference}</strong>.
+              <strong className="font-mono text-ink">{confirmation.reference}</strong>.
               We've sent a copy to your email.
             </p>
             <button className="btn-warm mt-6" onClick={() => setConfirmation(null)}>
@@ -295,7 +295,7 @@ export default function BookingEnginePage() {
         </div>
       )}
 
-      <footer className="border-t border-cream-200 bg-cocoa-900 px-6 py-10 text-cream-100/80">
+      <footer className="border-t border-border bg-gray-900 px-6 py-10 text-gray-300">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm md:flex-row">
           <div>© {new Date().getFullYear()} {branding.hotel.name}</div>
           <div>Powered by Hospes</div>
@@ -347,17 +347,17 @@ function BookingDialog({
   })
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/60 p-4">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
       <div className="card-warm w-full max-w-2xl p-6">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="font-display text-2xl">Confirm your stay</h3>
-            <p className="mt-1 text-sm text-ink-soft">
+            <h3 className="text-xl font-semibold text-ink">Confirm your stay</h3>
+            <p className="mt-1 text-sm text-ink-secondary">
               {item.room_class.name} · {search.from} → {search.to} ·{" "}
               {item.quote ? formatCurrency(item.quote.grand_total, currency) : "—"} total
             </p>
           </div>
-          <button type="button" className="text-sm text-ink-soft hover:text-cocoa-900" onClick={onClose}>
+          <button type="button" className="text-sm text-ink-secondary hover:text-ink" onClick={onClose}>
             ✕
           </button>
         </div>
@@ -376,7 +376,7 @@ function BookingDialog({
           <label className="col-span-2"><span className="label-warm">Special requests</span><textarea className="input-warm min-h-20" value={form.special_requests} onChange={(e) => setForm({ ...form, special_requests: e.target.value })} /></label>
 
           {error && (
-            <div className="col-span-2 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">
+            <div className="col-span-2 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">
               {error}
             </div>
           )}

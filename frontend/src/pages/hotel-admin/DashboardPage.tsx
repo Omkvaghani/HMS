@@ -40,7 +40,7 @@ export default function HotelDashboard() {
       />
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -62,17 +62,17 @@ export default function HotelDashboard() {
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             <section className="card-warm p-6 lg:col-span-2">
               <div className="flex items-center justify-between">
-                <h3 className="font-display text-xl">Recent bookings</h3>
-                <a href="/hotel-admin/bookings" className="text-sm text-cocoa-800 hover:underline">View all</a>
+                <h3 className="text-lg font-semibold">Recent bookings</h3>
+                <a href="/hotel-admin/bookings" className="text-sm text-primary-600 hover:underline">View all</a>
               </div>
-              <div className="mt-4 divide-y divide-cream-100">
+              <div className="mt-4 divide-y divide-border">
                 {(data?.recent_bookings ?? []).length === 0 ? (
-                  <div className="py-8 text-center text-ink-soft">No bookings yet.</div>
+                  <div className="py-8 text-center text-ink-secondary">No bookings yet.</div>
                 ) : (
                   (data?.recent_bookings ?? []).map((b) => (
                     <div key={b.id} className="flex items-center justify-between py-3 text-sm">
                       <div>
-                        <div className="font-medium text-cocoa-900">
+                        <div className="font-medium text-ink">
                           {b.customer?.first_name ?? "Guest"} {b.customer?.last_name ?? ""}
                         </div>
                         <div className="text-xs text-ink-muted">
@@ -81,7 +81,7 @@ export default function HotelDashboard() {
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="pill">{b.status}</span>
-                        <div className="font-medium text-cocoa-900">
+                        <div className="font-medium text-ink">
                           {formatCurrency(b.grand_total, b.currency)}
                         </div>
                       </div>
@@ -92,8 +92,8 @@ export default function HotelDashboard() {
             </section>
 
             <section className="card-warm flex flex-col p-6">
-              <h3 className="font-display text-xl">Customers</h3>
-              <div className="mt-2 flex items-center gap-2 text-ink-soft">
+              <h3 className="text-lg font-semibold">Customers</h3>
+              <div className="mt-2 flex items-center gap-2 text-ink-secondary">
                 <Users className="size-4" />
                 {data?.customers_total ?? 0} guests on file
               </div>
@@ -103,7 +103,7 @@ export default function HotelDashboard() {
             </section>
 
             <section className="card-warm flex flex-col p-6">
-              <h3 className="font-display text-xl">Quick actions</h3>
+              <h3 className="text-lg font-semibold">Quick actions</h3>
               <div className="mt-3 flex flex-col gap-2 text-sm">
                 <a className="btn-warm" href="/hotel-admin/bookings"><CalendarCheck className="size-4" /> New booking</a>
                 <a className="btn-ghost" href="/hotel-admin/rooms">Update room status</a>
@@ -133,7 +133,7 @@ function Stat({
         {icon}
         {label}
       </div>
-      <div className="mt-2 font-display text-3xl text-cocoa-900">{value}</div>
+      <div className="mt-2 text-3xl font-semibold text-ink">{value}</div>
       {hint && <div className="mt-1 text-xs text-ink-muted">{hint}</div>}
     </div>
   )

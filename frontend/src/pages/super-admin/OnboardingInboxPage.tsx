@@ -82,10 +82,10 @@ export default function OnboardingInboxPage() {
             type="button"
             onClick={() => setFilter(tab.key as typeof filter)}
             className={
-              "rounded-full px-4 py-1.5 text-sm font-medium " +
-              (filter === tab.key
-                ? "bg-cocoa-800 text-cream-50"
-                : "bg-white text-ink-soft border border-cream-200 hover:border-sand-400")
+                "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors " +
+                (filter === tab.key
+                  ? "bg-primary-600 text-white"
+                  : "bg-surface text-ink-secondary border border-border hover:border-border-strong")
             }
           >
             {tab.label}
@@ -94,17 +94,17 @@ export default function OnboardingInboxPage() {
       </div>
 
       {feedback && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">
           {feedback}
         </div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : items.length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
           <Building2 className="size-10 text-ink-muted" />
-          <p className="mt-4 text-ink-soft">No applications {filter ? `with status ${filter}` : ""}.</p>
+          <p className="mt-4 text-ink-secondary">No applications {filter ? `with status ${filter}` : ""}.</p>
         </div>
       ) : (
         <div className="grid gap-4 lg:grid-cols-2">
@@ -112,8 +112,8 @@ export default function OnboardingInboxPage() {
             <article key={req.id} className="card-warm p-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="font-display text-xl">{req.hotel_name}</h3>
-                  <div className="mt-1 text-sm text-ink-soft">
+                  <h3 className="text-lg font-semibold text-ink">{req.hotel_name}</h3>
+                  <div className="mt-1 text-sm text-ink-secondary">
                     {[req.city, req.country].filter(Boolean).join(", ")}
                   </div>
                 </div>
@@ -151,7 +151,7 @@ export default function OnboardingInboxPage() {
               )}
 
               {rejectingId === req.id && (
-                <div className="mt-4 space-y-2 rounded-xl bg-cream-50 p-4">
+                <div className="mt-4 space-y-2 rounded-lg bg-surface-tertiary p-4">
                   <textarea
                     placeholder="Reason for rejection"
                     className="input-warm min-h-20"
@@ -179,24 +179,24 @@ export default function OnboardingInboxPage() {
       )}
 
       {approvalCreds && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
           <div className="card-warm w-full max-w-md p-6">
-            <h3 className="font-display text-2xl">Tenant provisioned.</h3>
-            <p className="mt-2 text-sm text-ink-soft">
+            <h3 className="text-xl font-semibold text-ink">Tenant provisioned.</h3>
+            <p className="mt-2 text-sm text-ink-secondary">
               The hotel admin can now sign in. Please share these credentials securely:
             </p>
-            <dl className="mt-4 space-y-2 rounded-lg bg-cream-50 p-4 text-sm">
+            <dl className="mt-4 space-y-2 rounded-lg bg-surface-tertiary p-4 text-sm">
               <div>
                 <dt className="text-ink-muted">Sign-in email</dt>
-                <dd className="font-mono text-cocoa-900">{approvalCreds.email}</dd>
+                <dd className="font-mono text-ink">{approvalCreds.email}</dd>
               </div>
               <div>
                 <dt className="text-ink-muted">Temporary password</dt>
-                <dd className="font-mono text-cocoa-900">{approvalCreds.password}</dd>
+                <dd className="font-mono text-ink">{approvalCreds.password}</dd>
               </div>
               <div>
                 <dt className="text-ink-muted">Booking site</dt>
-                <dd className="font-mono text-cocoa-900">/book/{approvalCreds.subdomain}</dd>
+                <dd className="font-mono text-ink">/book/{approvalCreds.subdomain}</dd>
               </div>
             </dl>
             <div className="mt-5 flex justify-end">
@@ -218,16 +218,16 @@ function Pair({ label, value, icon }: { label: string; value: string; icon?: Rea
         {icon}
         {label}
       </dt>
-      <dd className="mt-0.5 truncate text-cocoa-900">{value}</dd>
+      <dd className="mt-0.5 truncate text-ink">{value}</dd>
     </div>
   )
 }
 
 function StatusBadge({ status }: { status: OnboardingRequest["status"] }) {
   const cfg = {
-    PENDING: { className: "bg-cream-100 text-cocoa-700", label: "Pending" },
-    APPROVED: { className: "bg-leaf-500/15 text-leaf-600", label: "Approved" },
-    REJECTED: { className: "bg-rose-500/15 text-rose-600", label: "Rejected" },
+    PENDING: { className: "bg-warning-50 text-warning-600", label: "Pending" },
+    APPROVED: { className: "bg-success-50 text-success-600", label: "Approved" },
+    REJECTED: { className: "bg-danger-50 text-danger-600", label: "Rejected" },
   }[status]
   return (
     <span className={"pill " + cfg.className}>{cfg.label}</span>

@@ -126,16 +126,16 @@ export default function RoomClassesPage() {
       />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">
           {error}
         </div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : items.length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
-          <p className="text-ink-soft">No room classes yet — create one to start accepting bookings.</p>
+          <p className="text-ink-secondary">No room classes yet — create one to start accepting bookings.</p>
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -143,10 +143,10 @@ export default function RoomClassesPage() {
             <article key={rc.id} className="card-warm p-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="font-display text-xl">{rc.name}</h3>
-                  <p className="mt-1 text-sm text-ink-soft">{rc.description ?? "—"}</p>
+                  <h3 className="text-lg font-semibold">{rc.name}</h3>
+                  <p className="mt-1 text-sm text-ink-secondary">{rc.description ?? "—"}</p>
                 </div>
-                <span className={"pill " + (rc.is_active ? "bg-leaf-500/15 text-leaf-600" : "bg-cream-100 text-ink-muted")}>
+                <span className={"pill " + (rc.is_active ? "bg-success-50 text-success-600" : "bg-surface-tertiary text-ink-muted")}>
                   {rc.is_active ? "Active" : "Inactive"}
                 </span>
               </div>
@@ -159,14 +159,14 @@ export default function RoomClassesPage() {
               {rc.duration_prices && Object.keys(rc.duration_prices).length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-2">
                   {Object.entries(rc.duration_prices).map(([k, v]) => (
-                    <span key={k} className="pill bg-cream-100 text-cocoa-700">
+                    <span key={k} className="pill bg-surface-tertiary text-ink-secondary">
                       {k}: {formatCurrency(v)}
                     </span>
                   ))}
                 </div>
               )}
               <div className="mt-4 flex justify-end">
-                <button type="button" className="text-sm font-medium text-cocoa-800 hover:underline" onClick={() => open(rc)}>
+                <button type="button" className="text-sm font-medium text-primary-600 hover:text-primary-700" onClick={() => open(rc)}>
                   Edit
                 </button>
               </div>
@@ -176,10 +176,10 @@ export default function RoomClassesPage() {
       )}
 
       {showCreate && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
           <div className="card-warm w-full max-w-2xl p-6">
-            <h3 className="font-display text-2xl">{editing ? "Edit room class" : "New room class"}</h3>
-            <p className="mt-1 text-sm text-ink-soft">Set capacity, base nightly rate, and optional short-stay rates.</p>
+            <h3 className="text-xl font-semibold">{editing ? "Edit room class" : "New room class"}</h3>
+            <p className="mt-1 text-sm text-ink-secondary">Set capacity, base nightly rate, and optional short-stay rates.</p>
             <form
               onSubmit={(e) => {
                 e.preventDefault()
@@ -215,9 +215,9 @@ export default function RoomClassesPage() {
                 <input className="input-warm" type="number" min={0} step="0.01" value={form.weekend_price} onChange={(e) => setForm({ ...form, weekend_price: e.target.value })} />
               </Field>
 
-              <div className="col-span-2 rounded-xl border border-cream-200 p-4">
-                <div className="font-medium text-cocoa-900">Short-stay & per-duration prices</div>
-                <p className="mt-1 text-sm text-ink-soft">Optional. Leave blank to fall back to a percentage of the base price.</p>
+              <div className="col-span-2 rounded-xl border border-border p-4">
+                <div className="font-medium text-ink">Short-stay & per-duration prices</div>
+                <p className="mt-1 text-sm text-ink-secondary">Optional. Leave blank to fall back to a percentage of the base price.</p>
                 <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-5">
                   {DURATION_FIELDS.map((d) => (
                     <label key={d.code}>
@@ -269,7 +269,7 @@ function Pair({ label, value }: { label: string; value: string }) {
   return (
     <div>
       <dt className="text-xs uppercase tracking-wide text-ink-muted">{label}</dt>
-      <dd className="mt-0.5 text-cocoa-900">{value}</dd>
+      <dd className="mt-0.5 text-ink">{value}</dd>
     </div>
   )
 }

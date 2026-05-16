@@ -23,14 +23,14 @@ export default function SuperAdminDashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Total tenants" value={stats?.total ?? "—"} />
-        <Stat label="Active" value={stats?.active ?? "—"} accent="text-leaf-600" />
-        <Stat label="Suspended" value={stats?.suspended ?? "—"} accent="text-rose-600" />
+        <Stat label="Active" value={stats?.active ?? "—"} accent="text-success-600" />
+        <Stat label="Suspended" value={stats?.suspended ?? "—"} accent="text-danger-600" />
         <Stat label="New this month" value={stats?.created_this_month ?? "—"} />
       </div>
 
       <section className="card-warm mt-8 p-6">
-        <h3 className="font-display text-xl">Quick actions</h3>
-        <p className="mt-1 text-sm text-ink-soft">
+        <h3 className="text-lg font-semibold text-ink">Quick actions</h3>
+        <p className="mt-1 text-sm text-ink-secondary">
           Review pending applications and provision new tenant databases.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
@@ -46,7 +46,7 @@ function Stat({ label, value, accent }: { label: string; value: string | number;
   return (
     <div className="card-warm p-5">
       <div className="text-xs uppercase tracking-wide text-ink-muted">{label}</div>
-      <div className={"mt-2 font-display text-3xl text-cocoa-900 " + (accent ?? "")}>{value}</div>
+      <div className={"mt-2 text-3xl font-semibold text-ink " + (accent ?? "")}>{value}</div>
     </div>
   )
 }

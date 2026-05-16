@@ -130,15 +130,15 @@ export default function PackagesPage() {
       />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">{error}</div>
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">{error}</div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (
         <div className="card-warm overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cream-50 text-left text-xs uppercase tracking-wide text-ink-muted">
+            <thead className="bg-surface-tertiary text-left text-xs uppercase tracking-wide text-ink-muted">
               <tr>
                 <th className="px-5 py-3">Plan</th>
                 <th className="px-5 py-3">Monthly</th>
@@ -150,34 +150,34 @@ export default function PackagesPage() {
             </thead>
             <tbody>
               {(data?.data ?? []).map((p) => (
-                <tr key={p.id} className="border-t border-cream-100">
+                <tr key={p.id} className="border-t border-border">
                   <td className="px-5 py-3">
-                    <div className="font-medium text-cocoa-900">{p.name}</div>
+                    <div className="font-medium text-ink">{p.name}</div>
                     <div className="text-xs text-ink-muted">{p.slug}</div>
                   </td>
-                  <td className="px-5 py-3 text-cocoa-900">
+                  <td className="px-5 py-3 text-ink">
                     {formatCurrency(p.monthly_price, p.currency)}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">
+                  <td className="px-5 py-3 text-ink-secondary">
                     {p.yearly_price ? formatCurrency(p.yearly_price, p.currency) : "—"}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">
-                    <span className="font-medium text-cocoa-900">{p.max_hotels}</span> hotels ·{" "}
-                    <span className="font-medium text-cocoa-900">{p.max_rooms}</span> rooms ·{" "}
-                    <span className="font-medium text-cocoa-900">{p.max_staff}</span> staff
+                  <td className="px-5 py-3 text-ink-secondary">
+                    <span className="font-medium text-ink">{p.max_hotels}</span> hotels ·{" "}
+                    <span className="font-medium text-ink">{p.max_rooms}</span> rooms ·{" "}
+                    <span className="font-medium text-ink">{p.max_staff}</span> staff
                   </td>
                   <td className="px-5 py-3">
-                    <span className={"pill " + (p.is_public ? "bg-leaf-500/15 text-leaf-600" : "bg-cream-100 text-ink-muted")}>
+                    <span className={"pill " + (p.is_public ? "bg-success-50 text-success-600" : "bg-surface-tertiary text-ink-muted")}>
                       {p.is_public ? "Public" : "Internal"}
                     </span>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <button type="button" className="text-sm font-medium text-cocoa-800 hover:underline" onClick={() => open(p)}>
+                    <button type="button" className="text-sm font-medium text-primary-600 hover:text-primary-700" onClick={() => open(p)}>
                       Edit
                     </button>
                     <button
                       type="button"
-                      className="ml-3 text-sm font-medium text-rose-600 hover:underline"
+                      className="ml-3 text-sm font-medium text-danger-600 hover:text-danger-700"
                       onClick={() => {
                         if (confirm(`Delete package "${p.name}"?`)) remove.mutate(p.id)
                       }}
@@ -193,10 +193,10 @@ export default function PackagesPage() {
       )}
 
       {showModal && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
-          <div className="card-warm w-full max-w-3xl p-6">
-            <h3 className="font-display text-2xl">{editing ? "Edit package" : "New package"}</h3>
-            <p className="mt-1 text-sm text-ink-soft">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
+          <div className="card-warm w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6">
+            <h3 className="text-xl font-semibold text-ink">{editing ? "Edit package" : "New package"}</h3>
+            <p className="mt-1 text-sm text-ink-secondary">
               Set pricing and limits. The hotel limit caps how many properties a tenant on this plan can run.
             </p>
             <form

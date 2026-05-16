@@ -75,7 +75,7 @@ export default function SettingsPage() {
   })
 
   if (!activeHotel) return null
-  if (isLoading || !form) return <div className="text-ink-soft">Loading…</div>
+  if (isLoading || !form) return <div className="text-ink-secondary">Loading…</div>
 
   const settings = form.settings ?? {}
 
@@ -94,7 +94,7 @@ export default function SettingsPage() {
       <PageHeader title="Settings" subtitle={`Global defaults for ${activeHotel.name}.`} />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">{error}</div>
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">{error}</div>
       )}
 
       <form
@@ -105,8 +105,8 @@ export default function SettingsPage() {
         }}
       >
         <section className="card-warm p-6">
-          <h3 className="font-display text-xl">Check-in & checkout</h3>
-          <p className="text-sm text-ink-soft">Default times applied to new bookings.</p>
+          <h3 className="text-lg font-semibold">Check-in & checkout</h3>
+          <p className="text-sm text-ink-secondary">Default times applied to new bookings.</p>
           <div className="mt-4 grid grid-cols-2 gap-4">
             <label>
               <span className="label-warm">Default check-in</span>
@@ -143,8 +143,8 @@ export default function SettingsPage() {
         </section>
 
         <section className="card-warm p-6">
-          <h3 className="font-display text-xl">Booking duration options</h3>
-          <p className="text-sm text-ink-soft">Pick which stay durations the hotel offers.</p>
+          <h3 className="text-lg font-semibold">Booking duration options</h3>
+          <p className="text-sm text-ink-secondary">Pick which stay durations the hotel offers.</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {ALL_DURATIONS.map((d) => {
               const enabled = (settings.enabled_duration_types ?? []).includes(d.code)
@@ -156,8 +156,8 @@ export default function SettingsPage() {
                   className={
                     "rounded-full border px-4 py-1.5 text-sm transition " +
                     (enabled
-                      ? "border-copper-500 bg-copper-500/10 text-cocoa-900"
-                      : "border-cream-200 text-ink-soft hover:border-sand-400")
+                      ? "border-primary-500 bg-primary-50 text-ink"
+                      : "border-border text-ink-secondary hover:border-border-strong")
                   }
                 >
                   {d.label}
@@ -168,7 +168,7 @@ export default function SettingsPage() {
         </section>
 
         <section className="card-warm p-6">
-          <h3 className="font-display text-xl">Booking automation</h3>
+          <h3 className="text-lg font-semibold">Booking automation</h3>
           <div className="mt-4 space-y-3">
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -182,7 +182,7 @@ export default function SettingsPage() {
         </section>
 
         <section className="card-warm p-6">
-          <h3 className="font-display text-xl">Currency & taxes</h3>
+          <h3 className="text-lg font-semibold">Currency & taxes</h3>
           <div className="mt-4 grid grid-cols-2 gap-4">
             <label>
               <span className="label-warm">Currency</span>
@@ -207,7 +207,7 @@ export default function SettingsPage() {
         </section>
 
         <div className="flex items-center justify-end gap-3">
-          {saved && <span className="text-sm text-leaf-600">{saved}</span>}
+          {saved && <span className="text-sm text-success-600">{saved}</span>}
           <button className="btn-warm" disabled={save.isPending}>
             {save.isPending ? "Saving…" : "Save settings"}
           </button>

@@ -17,11 +17,11 @@ type Room = {
 }
 
 const STATUS_COLORS: Record<Room["status"], string> = {
-  AVAILABLE: "bg-leaf-500/15 text-leaf-600",
-  OCCUPIED: "bg-copper-500/20 text-cocoa-700",
-  CLEANING: "bg-sand-300/40 text-cocoa-800",
-  MAINTENANCE: "bg-rose-500/15 text-rose-600",
-  OUT_OF_ORDER: "bg-ink/10 text-ink-soft",
+  AVAILABLE: "bg-success-50 text-success-600",
+  OCCUPIED: "bg-primary-100 text-primary-700",
+  CLEANING: "bg-warning-50 text-warning-600",
+  MAINTENANCE: "bg-danger-50 text-danger-600",
+  OUT_OF_ORDER: "bg-gray-200 text-ink-secondary",
 }
 
 export default function RoomsPage() {
@@ -83,21 +83,21 @@ export default function RoomsPage() {
       />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">{error}</div>
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">{error}</div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : items.length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
-          <p className="text-ink-soft">No rooms yet — create a room class first, then add rooms.</p>
+          <p className="text-ink-secondary">No rooms yet — create a room class first, then add rooms.</p>
         </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {items.map((r) => (
             <div key={r.id} className="card-warm p-4">
               <div className="flex items-baseline justify-between">
-                <div className="font-display text-2xl text-cocoa-900">{r.room_number}</div>
+                <div className="text-xl font-semibold text-ink">{r.room_number}</div>
                 {r.floor && <div className="text-xs text-ink-muted">Fl {r.floor}</div>}
               </div>
               <div className="mt-1 truncate text-xs text-ink-muted">{r.room_class?.name ?? "—"}</div>
@@ -121,9 +121,9 @@ export default function RoomsPage() {
       )}
 
       {showCreate && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
           <div className="card-warm w-full max-w-md p-6">
-            <h3 className="font-display text-2xl">New room</h3>
+            <h3 className="text-xl font-semibold">New room</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault()

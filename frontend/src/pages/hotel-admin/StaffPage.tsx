@@ -128,19 +128,19 @@ export default function StaffPage() {
       />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">{error}</div>
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">{error}</div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (data?.data ?? []).length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
-          <p className="text-ink-soft">No staff yet for this hotel. Add receptionists, housekeeping, managers…</p>
+          <p className="text-ink-secondary">No staff yet for this hotel. Add receptionists, housekeeping, managers…</p>
         </div>
       ) : (
         <div className="card-warm overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cream-50 text-left text-xs uppercase tracking-wide text-ink-muted">
+            <thead className="bg-surface-tertiary text-left text-xs uppercase tracking-wide text-ink-muted">
               <tr>
                 <th className="px-5 py-3">Name</th>
                 <th className="px-5 py-3">Role</th>
@@ -152,40 +152,40 @@ export default function StaffPage() {
             </thead>
             <tbody>
               {(data?.data ?? []).map((s) => (
-                <tr key={s.id} className="border-t border-cream-100">
+                <tr key={s.id} className="border-t border-border">
                   <td className="px-5 py-3">
-                    <div className="font-medium text-cocoa-900">
+                    <div className="font-medium text-ink">
                       {s.first_name} {s.last_name ?? ""}
                     </div>
                     {s.hotel && <div className="text-xs text-ink-muted">{s.hotel.name}</div>}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">
+                  <td className="px-5 py-3 text-ink-secondary">
                     {s.job_title || "—"}
                     <div className="text-xs text-ink-muted">{s.department || ""}</div>
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">
+                  <td className="px-5 py-3 text-ink-secondary">
                     <div>{s.email}</div>
                     <div className="text-xs text-ink-muted">{s.phone || ""}</div>
                   </td>
-                  <td className="px-5 py-3 text-cocoa-900">
+                  <td className="px-5 py-3 text-ink">
                     {Number(s.monthly_salary) > 0 ? `${formatCurrency(s.monthly_salary, s.currency)} / mo` : "—"}
                   </td>
                   <td className="px-5 py-3">
                     <span
                       className={
-                        "pill " + (s.is_active ? "bg-leaf-500/15 text-leaf-600" : "bg-cream-100 text-ink-muted")
+                        "pill " + (s.is_active ? "bg-success-50 text-success-600" : "bg-surface-tertiary text-ink-muted")
                       }
                     >
                       {s.is_active ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <button type="button" className="text-sm font-medium text-cocoa-800 hover:underline" onClick={() => open(s)}>
+                    <button type="button" className="text-sm font-medium text-primary-600 hover:text-primary-700" onClick={() => open(s)}>
                       Edit
                     </button>
                     <button
                       type="button"
-                      className="ml-3 text-sm font-medium text-rose-600 hover:underline"
+                      className="ml-3 text-sm font-medium text-danger-600 hover:text-danger-700"
                       onClick={() => {
                         if (confirm(`Remove ${s.first_name}?`)) remove.mutate(s.id)
                       }}
@@ -201,9 +201,9 @@ export default function StaffPage() {
       )}
 
       {showForm && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
           <div className="card-warm w-full max-w-2xl p-6">
-            <h3 className="font-display text-2xl">{editing ? "Edit staff member" : "New staff member"}</h3>
+            <h3 className="text-xl font-semibold">{editing ? "Edit staff member" : "New staff member"}</h3>
             <form
               className="mt-5 grid grid-cols-2 gap-4"
               onSubmit={(e) => {

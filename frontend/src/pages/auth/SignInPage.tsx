@@ -34,7 +34,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="surface-paper grid min-h-screen md:grid-cols-2">
+    <div className="grid min-h-screen bg-surface-secondary md:grid-cols-2">
       <div className="hidden md:block">
         <div className="relative h-full w-full overflow-hidden">
           <img
@@ -42,23 +42,23 @@ export default function SignInPage() {
             alt="Hotel hallway"
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-cocoa-900/40" />
-          <div className="absolute inset-0 flex flex-col justify-end p-10 text-cream-50">
-            <span className="font-display text-3xl">Hospes</span>
-            <p className="mt-2 max-w-sm text-cream-100/85">
-              The hospitality OS. Calm, warm, and quietly powerful.
+          <div className="absolute inset-0 bg-gray-900/50" />
+          <div className="absolute inset-0 flex flex-col justify-end p-10 text-white">
+            <span className="text-3xl font-semibold">Hospes</span>
+            <p className="mt-2 max-w-sm text-gray-300">
+              The hospitality OS. Clean, modern, and quietly powerful.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center justify-center p-6 sm:p-8">
         <div className="w-full max-w-sm">
-          <Link to="/" className="text-sm text-ink-soft hover:text-cocoa-800">
+          <Link to="/" className="text-sm text-ink-secondary hover:text-ink transition-colors">
             ← Back
           </Link>
-          <h1 className="mt-6 text-3xl">Welcome back.</h1>
-          <p className="mt-1 text-sm text-ink-soft">Sign in to manage your property.</p>
+          <h1 className="mt-6 text-2xl sm:text-3xl font-semibold text-ink">Welcome back.</h1>
+          <p className="mt-1 text-sm text-ink-secondary">Sign in to manage your property.</p>
 
           <form onSubmit={onSubmit} className="mt-8 space-y-5">
             <div>
@@ -85,7 +85,7 @@ export default function SignInPage() {
             </div>
 
             {error && (
-              <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">
+              <div className="rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">
                 {error}
               </div>
             )}
@@ -95,9 +95,9 @@ export default function SignInPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-ink-soft">
+          <div className="mt-6 text-center text-sm text-ink-secondary">
             Want to list your hotel?{" "}
-            <Link to="/apply" className="font-medium text-cocoa-800 hover:underline">
+            <Link to="/apply" className="font-medium text-primary-600 hover:text-primary-700">
               Apply for an account
             </Link>
           </div>

@@ -102,7 +102,7 @@ export default function CashPage() {
       />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">{error}</div>
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">{error}</div>
       )}
 
       {summary && (
@@ -114,15 +114,15 @@ export default function CashPage() {
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (data?.data ?? []).length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
-          <p className="text-ink-soft">No cash entries yet. Cash payments on bookings flow in automatically.</p>
+          <p className="text-ink-secondary">No cash entries yet. Cash payments on bookings flow in automatically.</p>
         </div>
       ) : (
         <div className="card-warm overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cream-50 text-left text-xs uppercase tracking-wide text-ink-muted">
+            <thead className="bg-surface-tertiary text-left text-xs uppercase tracking-wide text-ink-muted">
               <tr>
                 <th className="px-5 py-3">Date</th>
                 <th className="px-5 py-3">Kind</th>
@@ -134,28 +134,28 @@ export default function CashPage() {
             </thead>
             <tbody>
               {(data?.data ?? []).map((t) => (
-                <tr key={t.id} className="border-t border-cream-100">
-                  <td className="px-5 py-3 text-ink-soft">{formatDate(t.transaction_date)}</td>
-                  <td className="px-5 py-3 font-medium text-cocoa-900">
+                <tr key={t.id} className="border-t border-border">
+                  <td className="px-5 py-3 text-ink-secondary">{formatDate(t.transaction_date)}</td>
+                  <td className="px-5 py-3 font-medium text-ink">
                     {t.kind.replaceAll("_", " ")}
                     {t.notes && <div className="text-xs text-ink-muted">{t.notes}</div>}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">{t.reference ?? "—"}</td>
+                  <td className="px-5 py-3 text-ink-secondary">{t.reference ?? "—"}</td>
                   <td className="px-5 py-3">
                     <span
                       className={
                         "pill " +
-                        (t.direction === "IN" ? "bg-leaf-500/15 text-leaf-600" : "bg-rose-500/15 text-rose-600")
+                        (t.direction === "IN" ? "bg-success-50 text-success-600" : "bg-danger-50 text-danger-600")
                       }
                     >
                       {t.direction === "IN" ? "Cash in" : "Cash out"}
                     </span>
                   </td>
-                  <td className="px-5 py-3 font-medium text-cocoa-900">{formatCurrency(t.amount, t.currency)}</td>
+                  <td className="px-5 py-3 font-medium text-ink">{formatCurrency(t.amount, t.currency)}</td>
                   <td className="px-5 py-3 text-right">
                     <button
                       type="button"
-                      className="text-sm font-medium text-rose-600 hover:underline"
+                      className="text-sm font-medium text-danger-600 hover:text-danger-700"
                       onClick={() => {
                         if (confirm("Delete this entry?")) remove.mutate(t.id)
                       }}
@@ -171,9 +171,9 @@ export default function CashPage() {
       )}
 
       {showForm && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
           <div className="card-warm w-full max-w-2xl p-6">
-            <h3 className="font-display text-2xl">New cash entry</h3>
+            <h3 className="text-xl font-semibold">New cash entry</h3>
             <form
               className="mt-5 grid grid-cols-2 gap-4"
               onSubmit={(ev) => {
@@ -239,7 +239,7 @@ function SummaryCard({ label, value, positive }: { label: string; value: number;
   return (
     <div className="card-warm p-4">
       <div className="text-xs uppercase tracking-wide text-ink-muted">{label}</div>
-      <div className={"mt-1 font-display text-2xl " + (positive ? "text-leaf-600" : "text-rose-600")}>
+      <div className={"mt-1 text-xl font-semibold " + (positive ? "text-success-600" : "text-danger-600")}>
         {formatCurrency(value)}
       </div>
     </div>
