@@ -54,17 +54,17 @@ export default function TenantsPage() {
       />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">
           {error}
         </div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (
         <div className="card-warm overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cream-50 text-left text-xs uppercase tracking-wide text-ink-muted">
+            <thead className="bg-surface-tertiary text-left text-xs uppercase tracking-wide text-ink-muted">
               <tr>
                 <th className="px-5 py-3">Hotel</th>
                 <th className="px-5 py-3">Subdomain</th>
@@ -76,24 +76,24 @@ export default function TenantsPage() {
             </thead>
             <tbody>
               {(data?.data ?? []).map((t) => (
-                <tr key={t.id} className="border-t border-cream-100">
+                <tr key={t.id} className="border-t border-border">
                   <td className="px-5 py-3">
-                    <div className="font-medium text-cocoa-900">{t.name}</div>
+                    <div className="font-medium text-ink">{t.name}</div>
                     <div className="text-xs text-ink-muted">{t.contact_email}</div>
                   </td>
-                  <td className="px-5 py-3 font-mono text-xs text-ink-soft">
+                  <td className="px-5 py-3 font-mono text-xs text-ink-secondary">
                     {t.domains?.[0]?.domain ?? "—"}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">{t.package?.name ?? "—"}</td>
+                  <td className="px-5 py-3 text-ink-secondary">{t.package?.name ?? "—"}</td>
                   <td className="px-5 py-3">
                     <Status status={t.status} />
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">{formatDateTime(t.created_at)}</td>
+                  <td className="px-5 py-3 text-ink-secondary">{formatDateTime(t.created_at)}</td>
                   <td className="px-5 py-3 text-right">
                     {t.status === "SUSPENDED" ? (
                       <button
                         type="button"
-                        className="text-sm font-medium text-leaf-600 hover:underline"
+                        className="text-sm font-medium text-success-600 hover:text-success-700"
                         onClick={() => activate.mutate(t.id)}
                       >
                         Activate
@@ -101,7 +101,7 @@ export default function TenantsPage() {
                     ) : (
                       <button
                         type="button"
-                        className="text-sm font-medium text-rose-600 hover:underline"
+                        className="text-sm font-medium text-danger-600 hover:text-danger-700"
                         onClick={() => suspend.mutate(t.id)}
                       >
                         Suspend
@@ -113,7 +113,7 @@ export default function TenantsPage() {
             </tbody>
           </table>
           {(data?.data ?? []).length === 0 && (
-            <div className="px-5 py-12 text-center text-ink-soft">No tenants yet.</div>
+            <div className="px-5 py-12 text-center text-ink-secondary">No tenants yet.</div>
           )}
         </div>
       )}
@@ -123,10 +123,10 @@ export default function TenantsPage() {
 
 function Status({ status }: { status: Tenant["status"] }) {
   const map = {
-    ACTIVE: "bg-leaf-500/15 text-leaf-600",
-    PENDING: "bg-cream-100 text-cocoa-700",
-    SUSPENDED: "bg-rose-500/15 text-rose-600",
-    REJECTED: "bg-rose-500/10 text-rose-600/80",
+    ACTIVE: "bg-success-50 text-success-600",
+    PENDING: "bg-warning-50 text-warning-600",
+    SUSPENDED: "bg-danger-50 text-danger-600",
+    REJECTED: "bg-danger-50 text-danger-600",
   } as const
   return <span className={"pill " + map[status]}>{status}</span>
 }

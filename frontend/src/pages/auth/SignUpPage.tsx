@@ -37,13 +37,13 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="surface-paper grid min-h-screen place-items-center p-6">
-      <div className="card-warm w-full max-w-md p-8">
-        <Link to="/" className="text-sm text-ink-soft hover:text-cocoa-800">
+    <div className="grid min-h-screen place-items-center bg-surface-secondary p-6">
+      <div className="card-warm w-full max-w-md p-6 sm:p-8">
+        <Link to="/" className="text-sm text-ink-secondary hover:text-ink transition-colors">
           ← Back
         </Link>
-        <h1 className="mt-4 text-3xl">Create a guest account.</h1>
-        <p className="mt-1 text-sm text-ink-soft">
+        <h1 className="mt-4 text-2xl sm:text-3xl font-semibold text-ink">Create a guest account.</h1>
+        <p className="mt-1 text-sm text-ink-secondary">
           Save your details and view past stays. Hotel teams sign in with the credentials we email
           you when your application is approved.
         </p>
@@ -71,7 +71,7 @@ export default function SignUpPage() {
           </div>
 
           {error && (
-            <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">
+            <div className="rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">
               {error}
             </div>
           )}

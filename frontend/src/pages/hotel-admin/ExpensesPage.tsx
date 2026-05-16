@@ -139,34 +139,34 @@ export default function ExpensesPage() {
       />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">{error}</div>
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">{error}</div>
       )}
 
       {summary && (
         <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-4">
           <div className="card-warm p-4">
             <div className="text-xs uppercase tracking-wide text-ink-muted">Total spent</div>
-            <div className="mt-1 font-display text-2xl text-cocoa-900">{formatCurrency(summary.total)}</div>
+            <div className="mt-1 text-xl font-semibold text-ink">{formatCurrency(summary.total)}</div>
           </div>
           {summary.by_category.slice(0, 3).map((row) => (
             <div key={row.category} className="card-warm p-4">
               <div className="text-xs uppercase tracking-wide text-ink-muted">{row.category}</div>
-              <div className="mt-1 font-display text-2xl text-cocoa-900">{formatCurrency(row.total)}</div>
+              <div className="mt-1 text-xl font-semibold text-ink">{formatCurrency(row.total)}</div>
             </div>
           ))}
         </div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (data?.data ?? []).length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
-          <p className="text-ink-soft">No expenses recorded yet.</p>
+          <p className="text-ink-secondary">No expenses recorded yet.</p>
         </div>
       ) : (
         <div className="card-warm overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cream-50 text-left text-xs uppercase tracking-wide text-ink-muted">
+            <thead className="bg-surface-tertiary text-left text-xs uppercase tracking-wide text-ink-muted">
               <tr>
                 <th className="px-5 py-3">Date</th>
                 <th className="px-5 py-3">Category</th>
@@ -178,19 +178,19 @@ export default function ExpensesPage() {
             </thead>
             <tbody>
               {(data?.data ?? []).map((e) => (
-                <tr key={e.id} className="border-t border-cream-100">
-                  <td className="px-5 py-3 text-ink-soft">{formatDate(e.expense_date)}</td>
-                  <td className="px-5 py-3 font-medium text-cocoa-900">{e.category}</td>
-                  <td className="px-5 py-3 text-ink-soft">{e.vendor ?? "—"}</td>
-                  <td className="px-5 py-3 text-cocoa-900">{formatCurrency(e.amount, e.currency)}</td>
-                  <td className="px-5 py-3 text-ink-soft">{e.payment_method ?? "—"}</td>
+                <tr key={e.id} className="border-t border-border">
+                  <td className="px-5 py-3 text-ink-secondary">{formatDate(e.expense_date)}</td>
+                  <td className="px-5 py-3 font-medium text-ink">{e.category}</td>
+                  <td className="px-5 py-3 text-ink-secondary">{e.vendor ?? "—"}</td>
+                  <td className="px-5 py-3 text-ink">{formatCurrency(e.amount, e.currency)}</td>
+                  <td className="px-5 py-3 text-ink-secondary">{e.payment_method ?? "—"}</td>
                   <td className="px-5 py-3 text-right">
-                    <button type="button" className="text-sm font-medium text-cocoa-800 hover:underline" onClick={() => open(e)}>
+                    <button type="button" className="text-sm font-medium text-primary-600 hover:text-primary-700" onClick={() => open(e)}>
                       Edit
                     </button>
                     <button
                       type="button"
-                      className="ml-3 text-sm font-medium text-rose-600 hover:underline"
+                      className="ml-3 text-sm font-medium text-danger-600 hover:text-danger-700"
                       onClick={() => {
                         if (confirm("Delete this expense?")) remove.mutate(e.id)
                       }}
@@ -206,9 +206,9 @@ export default function ExpensesPage() {
       )}
 
       {showForm && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
           <div className="card-warm w-full max-w-2xl p-6">
-            <h3 className="font-display text-2xl">{editing ? "Edit expense" : "New expense"}</h3>
+            <h3 className="text-xl font-semibold">{editing ? "Edit expense" : "New expense"}</h3>
             <form
               className="mt-5 grid grid-cols-2 gap-4"
               onSubmit={(ev) => {

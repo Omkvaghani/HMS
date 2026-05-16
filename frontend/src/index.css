@@ -1,68 +1,141 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant superdark (&:where(.super-dark, .super-dark *));
 
 /* ---------------------------------------------------------------------------
-   Hospitality-warm theme (Marriott-inspired): warm sand, cocoa, copper accents
+   Professional Business Theme — Clean, minimal, 3 modes
 --------------------------------------------------------------------------- */
 @theme {
-  --color-cream-50: #fbf7f1;
-  --color-cream-100: #f5ecdf;
-  --color-cream-200: #ecdcc4;
-  --color-sand-300: #d8bd8e;
-  --color-sand-400: #c5a064;
-  --color-copper-500: #b07a3a;
-  --color-copper-600: #8d5f2a;
-  --color-cocoa-700: #6b4521;
-  --color-cocoa-800: #4a2f17;
-  --color-cocoa-900: #2c1c0e;
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
 
-  --color-ink: #1f1a14;
-  --color-ink-soft: #5a4f44;
-  --color-ink-muted: #8a7b6a;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  --color-gray-950: #020617;
 
-  --color-leaf-500: #6b8e4e;
-  --color-leaf-600: #54703d;
-  --color-rose-500: #c25a4d;
-  --color-rose-600: #a44438;
+  --color-success-50: #f0fdf4;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
 
-  --font-display: "Fraunces", "DM Serif Display", Georgia, serif;
+  --color-danger-50: #fef2f2;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f8fafc;
+  --color-surface-tertiary: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-ink: #0f172a;
+  --color-ink-secondary: #475569;
+  --color-ink-muted: #94a3b8;
+
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  --radius-card: 14px;
-  --shadow-card: 0 1px 2px rgba(74, 47, 23, 0.06),
-                 0 8px 24px rgba(74, 47, 23, 0.08);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark theme palette overrides — keep the warm copper accents but flip
-   surfaces / text to a deep cocoa-night palette. */
+/* --- Dark mode --- */
 :root.dark {
-  --color-cream-50: #1a130c;
-  --color-cream-100: #221a11;
-  --color-cream-200: #2c2117;
-  --color-sand-300: #b9914d;
-  --color-sand-400: #d2a464;
-  --color-copper-500: #d49058;
-  --color-copper-600: #b97c45;
-  --color-cocoa-700: #f1d9b8;
-  --color-cocoa-800: #f7e7c8;
-  --color-cocoa-900: #fbf2dd;
+  --color-surface: #1e293b;
+  --color-surface-secondary: #0f172a;
+  --color-surface-tertiary: #1a2332;
+  --color-border: #334155;
+  --color-border-strong: #475569;
+  --color-ink: #f1f5f9;
+  --color-ink-secondary: #cbd5e1;
+  --color-ink-muted: #64748b;
 
-  --color-ink: #f5ecdc;
-  --color-ink-soft: #c3b39b;
-  --color-ink-muted: #8e7e69;
+  --color-primary-50: #172554;
+  --color-primary-100: #1e3a8a;
 
-  --color-surface: #271d12;
+  --color-gray-50: #1e293b;
+  --color-gray-100: #1a2332;
+  --color-gray-200: #334155;
+  --color-gray-800: #e2e8f0;
+  --color-gray-900: #f1f5f9;
+  --color-gray-950: #f8fafc;
 
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4),
-                 0 8px 24px rgba(0, 0, 0, 0.45);
+  --color-success-50: rgba(34, 197, 94, 0.1);
+  --color-danger-50: rgba(239, 68, 68, 0.1);
+  --color-warning-50: rgba(245, 158, 11, 0.1);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Super Dark mode --- */
+:root.super-dark {
+  --color-surface: #0a0a0a;
+  --color-surface-secondary: #000000;
+  --color-surface-tertiary: #141414;
+  --color-border: #262626;
+  --color-border-strong: #404040;
+  --color-ink: #fafafa;
+  --color-ink-secondary: #d4d4d4;
+  --color-ink-muted: #737373;
+
+  --color-primary-50: #172554;
+  --color-primary-100: #1e3a8a;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+
+  --color-gray-50: #0a0a0a;
+  --color-gray-100: #141414;
+  --color-gray-200: #262626;
+  --color-gray-800: #e5e5e5;
+  --color-gray-900: #fafafa;
+  --color-gray-950: #ffffff;
+
+  --color-success-50: rgba(34, 197, 94, 0.08);
+  --color-danger-50: rgba(239, 68, 68, 0.08);
+  --color-warning-50: rgba(245, 158, 11, 0.08);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
 }
 
 @layer base {
   html {
     font-family: var(--font-sans);
     color: var(--color-ink);
-    background: var(--color-cream-50);
+    background: var(--color-surface-secondary);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -72,9 +145,9 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    color: var(--color-cocoa-900);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--color-ink);
   }
   a {
     color: inherit;
@@ -83,96 +156,119 @@
   *, *::before, *::after {
     box-sizing: border-box;
   }
-  /* subtle paper-texture undertone on the marketing/booking surfaces */
   .surface-paper {
-    background:
-      radial-gradient(circle at 20% 0%, rgba(208,167,116,0.08), transparent 40%),
-      radial-gradient(circle at 80% 100%, rgba(107,69,33,0.05), transparent 40%),
-      var(--color-cream-50);
+    background: var(--color-surface-secondary);
   }
 }
 
 @layer utilities {
-  .text-display { font-family: var(--font-display); }
+  .text-display { font-family: var(--font-display); font-weight: 600; }
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
-  /* primary "warm" button */
   .btn-warm {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 999px;
-    padding: 0.625rem 1.25rem;
-    background: var(--color-cocoa-800);
-    color: var(--color-cream-50);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 1rem;
+    background: var(--color-primary-600);
+    color: #ffffff;
     font-weight: 500;
-    transition: background 120ms ease, transform 120ms ease;
+    font-size: 0.875rem;
+    transition: background 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
   }
-  .btn-warm:hover { background: var(--color-cocoa-700); }
+  .btn-warm:hover { background: var(--color-primary-700); box-shadow: var(--shadow-md); }
   .btn-warm:active { transform: translateY(1px); }
-  .btn-warm:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-warm:disabled { opacity: 0.5; cursor: not-allowed; }
 
   .btn-ghost {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 999px;
-    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-md);
+    padding: 0.5rem 1rem;
     background: transparent;
-    color: var(--color-cocoa-800);
-    border: 1px solid var(--color-cream-200);
+    color: var(--color-ink);
+    border: 1px solid var(--color-border);
     font-weight: 500;
-    transition: background 120ms ease, border-color 120ms ease;
+    font-size: 0.875rem;
+    transition: background 150ms ease, border-color 150ms ease;
+    cursor: pointer;
   }
-  .btn-ghost:hover { background: var(--color-cream-100); border-color: var(--color-sand-300); }
+  .btn-ghost:hover {
+    background: var(--color-surface-tertiary);
+    border-color: var(--color-border-strong);
+  }
 
   .card-warm {
-    background: var(--color-surface, white);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-cream-200);
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
     color: var(--color-ink);
   }
 
   .input-warm {
     width: 100%;
-    border-radius: 10px;
-    background: var(--color-surface, white);
-    border: 1px solid var(--color-cream-200);
-    padding: 0.625rem 0.875rem;
-    font-size: 0.95rem;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
     color: var(--color-ink);
     outline: none;
-    transition: border-color 120ms ease, box-shadow 120ms ease;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
   }
   .input-warm:focus {
-    border-color: var(--color-sand-400);
-    box-shadow: 0 0 0 3px rgba(197, 160, 100, 0.18);
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+  .input-warm::placeholder {
+    color: var(--color-ink-muted);
   }
 
   .label-warm {
     font-size: 0.8125rem;
     font-weight: 500;
-    color: var(--color-ink-soft);
-    margin-bottom: 0.375rem;
+    color: var(--color-ink-secondary);
+    margin-bottom: 0.25rem;
     display: block;
   }
 
-  .surface-card { background: var(--color-surface, white); }
-  .surface-side { background: var(--color-surface, white); }
+  .surface-card { background: var(--color-surface); }
+  .surface-side { background: var(--color-surface); }
 
   .pill {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
     padding: 0.125rem 0.625rem;
-    border-radius: 999px;
+    border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 500;
-    background: var(--color-cream-100);
-    color: var(--color-cocoa-700);
+    background: var(--color-surface-tertiary);
+    color: var(--color-ink-secondary);
+  }
+
+  /* Scrollbar styling for dark modes */
+  .dark ::-webkit-scrollbar,
+  .super-dark ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .dark ::-webkit-scrollbar-track,
+  .super-dark ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .dark ::-webkit-scrollbar-thumb,
+  .super-dark ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 4px;
   }
 }

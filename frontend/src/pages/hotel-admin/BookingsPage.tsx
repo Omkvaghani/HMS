@@ -39,12 +39,12 @@ const STATUS_LABEL: Record<Booking["status"], string> = {
 }
 
 const STATUS_COLOR: Record<Booking["status"], string> = {
-  PENDING: "bg-cream-100 text-cocoa-700",
-  CONFIRMED: "bg-leaf-500/15 text-leaf-600",
-  CHECKED_IN: "bg-copper-500/20 text-cocoa-700",
-  CHECKED_OUT: "bg-ink/10 text-ink-soft",
-  CANCELLED: "bg-rose-500/15 text-rose-600",
-  NO_SHOW: "bg-rose-500/10 text-rose-600/80",
+  PENDING: "bg-surface-tertiary text-ink-secondary",
+  CONFIRMED: "bg-success-50 text-success-600",
+  CHECKED_IN: "bg-primary-100 text-primary-700",
+  CHECKED_OUT: "bg-gray-200 text-ink-secondary",
+  CANCELLED: "bg-danger-50 text-danger-600",
+  NO_SHOW: "bg-danger-50 text-danger-600",
 }
 
 const DURATION_LABELS: Record<string, string> = {
@@ -198,10 +198,10 @@ export default function BookingsPage() {
             type="button"
             onClick={() => setFilter(s as typeof filter)}
             className={
-              "rounded-full px-4 py-1.5 text-sm font-medium " +
+              "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors " +
               (filter === s
-                ? "bg-cocoa-800 text-cream-50"
-                : "border border-cream-200 text-ink-soft hover:border-sand-400 surface-card")
+                ? "bg-primary-600 text-white"
+                : "border border-border text-ink-secondary hover:border-border-strong bg-surface")
             }
           >
             {s ? STATUS_LABEL[s as Booking["status"]] : "All"}
@@ -210,19 +210,19 @@ export default function BookingsPage() {
       </div>
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-500/30 bg-rose-500/5 p-3 text-sm text-rose-600">{error}</div>
+        <div className="mb-4 rounded-lg border border-danger-500/30 bg-danger-50 p-3 text-sm text-danger-600">{error}</div>
       )}
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (data?.data ?? []).length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
-          <p className="text-ink-soft">No bookings yet. Direct guests to your booking site or add one manually.</p>
+          <p className="text-ink-secondary">No bookings yet. Direct guests to your booking site or add one manually.</p>
         </div>
       ) : (
         <div className="card-warm overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cream-50 text-left text-xs uppercase tracking-wide text-ink-muted">
+            <thead className="bg-surface-tertiary text-left text-xs uppercase tracking-wide text-ink-muted">
               <tr>
                 <th className="px-5 py-3">Reference</th>
                 <th className="px-5 py-3">Guest</th>
@@ -235,28 +235,28 @@ export default function BookingsPage() {
             </thead>
             <tbody>
               {(data?.data ?? []).map((b) => (
-                <tr key={b.id} className="border-t border-cream-100">
-                  <td className="px-5 py-3 font-mono text-xs text-ink-soft">{b.reference}</td>
+                <tr key={b.id} className="border-t border-border">
+                  <td className="px-5 py-3 font-mono text-xs text-ink-secondary">{b.reference}</td>
                   <td className="px-5 py-3">
-                    <div className="font-medium text-cocoa-900">
+                    <div className="font-medium text-ink">
                       {b.customer?.first_name ?? "Guest"} {b.customer?.last_name ?? ""}
                     </div>
                     <div className="text-xs text-ink-muted">{b.customer?.email}</div>
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">
+                  <td className="px-5 py-3 text-ink-secondary">
                     {formatDate(b.check_in_date)} → {formatDate(b.check_out_date)}
                     <div className="text-xs text-ink-muted">
                       {b.duration_type ? DURATION_LABELS[b.duration_type] ?? b.duration_type : `${b.nights} night${b.nights === 1 ? "" : "s"}`} · {b.adults}A {b.children}C
                     </div>
                     {b.booked_for_date && (
-                      <div className="text-xs text-copper-500">Booked for {formatDate(b.booked_for_date)}</div>
+                      <div className="text-xs text-primary-500">Booked for {formatDate(b.booked_for_date)}</div>
                     )}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">
-                    <span className="pill bg-cream-100 text-cocoa-700">{b.booking_type ?? "OFFLINE"}</span>
+                  <td className="px-5 py-3 text-ink-secondary">
+                    <span className="pill bg-surface-tertiary text-ink-secondary">{b.booking_type ?? "OFFLINE"}</span>
                     <div className="mt-1 text-xs text-ink-muted">{b.room_class?.name ?? ""}</div>
                   </td>
-                  <td className="px-5 py-3 text-cocoa-900">
+                  <td className="px-5 py-3 text-ink">
                     {formatCurrency(b.grand_total, b.currency)}
                     <div className="text-xs text-ink-muted">{b.payment_status} · due {formatCurrency(b.amount_due, b.currency)}</div>
                   </td>
@@ -265,12 +265,12 @@ export default function BookingsPage() {
                   </td>
                   <td className="px-5 py-3 text-right">
                     {(b.status === "CONFIRMED" || b.status === "PENDING") && (
-                      <button type="button" className="text-sm font-medium text-cocoa-800 hover:underline" onClick={() => checkIn.mutate(b.id)}>
+                      <button type="button" className="text-sm font-medium text-primary-600 hover:text-primary-700" onClick={() => checkIn.mutate(b.id)}>
                         Check in
                       </button>
                     )}
                     {b.status === "CHECKED_IN" && (
-                      <button type="button" className="text-sm font-medium text-cocoa-800 hover:underline" onClick={() => checkOut.mutate(b.id)}>
+                      <button type="button" className="text-sm font-medium text-primary-600 hover:text-primary-700" onClick={() => checkOut.mutate(b.id)}>
                         Check out
                       </button>
                     )}
@@ -283,9 +283,9 @@ export default function BookingsPage() {
       )}
 
       {showCreate && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-cocoa-900/50 p-4">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4">
           <div className="card-warm w-full max-w-3xl p-6">
-            <h3 className="font-display text-2xl">New booking</h3>
+            <h3 className="text-xl font-semibold">New booking</h3>
 
             <div className="mt-4 flex flex-wrap gap-2">
               {(["OFFLINE", "ONLINE", "ADVANCE"] as const).map((t) => (
@@ -294,10 +294,10 @@ export default function BookingsPage() {
                   key={t}
                   onClick={() => setForm({ ...form, booking_type: t })}
                   className={
-                    "rounded-full px-4 py-1.5 text-sm font-medium " +
+                    "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors " +
                     (form.booking_type === t
-                      ? "bg-cocoa-800 text-cream-50"
-                      : "border border-cream-200 text-ink-soft hover:border-sand-400")
+                      ? "bg-primary-600 text-white"
+                      : "border border-border text-ink-secondary hover:border-border-strong")
                   }
                 >
                   {t === "OFFLINE" ? "Offline / Walk-in" : t === "ONLINE" ? "Online" : "Advance reservation"}
@@ -314,8 +314,8 @@ export default function BookingsPage() {
                   className={
                     "rounded-full px-3 py-1.5 text-xs font-medium " +
                     (form.duration_type === d
-                      ? "bg-copper-500 text-cream-50"
-                      : "border border-cream-200 text-ink-soft hover:border-sand-400")
+                      ? "bg-primary-600 text-white"
+                      : "border border-border text-ink-secondary hover:border-border-strong")
                   }
                 >
                   {DURATION_LABELS[d] ?? d}
@@ -335,7 +335,7 @@ export default function BookingsPage() {
                   ))}
                 </select>
                 {previewPrice != null && (
-                  <span className="mt-1 block text-xs text-copper-500">
+                  <span className="mt-1 block text-xs text-primary-500">
                     Estimated price for {DURATION_LABELS[form.duration_type]}: {formatCurrency(previewPrice)}
                   </span>
                 )}

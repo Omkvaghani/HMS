@@ -47,15 +47,15 @@ export default function CustomersPage() {
       />
 
       {isLoading ? (
-        <div className="text-ink-soft">Loading…</div>
+        <div className="text-ink-secondary">Loading…</div>
       ) : (data?.data ?? []).length === 0 ? (
         <div className="card-warm flex flex-col items-center justify-center p-16 text-center">
-          <p className="text-ink-soft">No customers yet. They'll appear here as bookings come in.</p>
+          <p className="text-ink-secondary">No customers yet. They'll appear here as bookings come in.</p>
         </div>
       ) : (
         <div className="card-warm overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cream-50 text-left text-xs uppercase tracking-wide text-ink-muted">
+            <thead className="bg-surface-tertiary text-left text-xs uppercase tracking-wide text-ink-muted">
               <tr>
                 <th className="px-5 py-3">Name</th>
                 <th className="px-5 py-3">Email</th>
@@ -67,19 +67,19 @@ export default function CustomersPage() {
             </thead>
             <tbody>
               {(data?.data ?? []).map((c) => (
-                <tr key={c.id} className="border-t border-cream-100">
-                  <td className="px-5 py-3 font-medium text-cocoa-900">
+                <tr key={c.id} className="border-t border-border">
+                  <td className="px-5 py-3 font-medium text-ink">
                     {c.first_name} {c.last_name ?? ""}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">{c.email ?? "—"}</td>
-                  <td className="px-5 py-3 text-ink-soft">{c.phone ?? "—"}</td>
-                  <td className="px-5 py-3 text-ink-soft">
+                  <td className="px-5 py-3 text-ink-secondary">{c.email ?? "—"}</td>
+                  <td className="px-5 py-3 text-ink-secondary">{c.phone ?? "—"}</td>
+                  <td className="px-5 py-3 text-ink-secondary">
                     {[c.city, c.country].filter(Boolean).join(", ") || "—"}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">
+                  <td className="px-5 py-3 text-ink-secondary">
                     {c.id_type ? `${c.id_type}: ${c.id_number ?? "—"}` : "—"}
                   </td>
-                  <td className="px-5 py-3 text-ink-soft">{formatDateTime(c.created_at)}</td>
+                  <td className="px-5 py-3 text-ink-secondary">{formatDateTime(c.created_at)}</td>
                 </tr>
               ))}
             </tbody>
